@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Value Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-size: 1rem;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .output {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #28a745;
+            font-size: 1.1rem;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Real Estate Value Calculator</h1>
+
+        <!-- Select Unit Type -->
+        <label for="unitType">Select Unit Type:</label>
+        <select id="unitType">
+            <option value="1bhk">1 BHK</option>
+            <option value="2bhk">2 BHK</option>
+            <option value="3bhk">3 BHK</option>
+            <option value="4bhk">4 BHK</option>
+	    <option value="5bhk">5 BHK</option>
+	    <option value="6bhk">6 BHK</option>
+	    <option value="7bhk">7 BHK</option>
+	    <option value="8bhk">8 BHK</option>
+        </select>
+
+        <!-- Unit Cost -->
+        <label for="unitCost">Unit Cost (₹):</label>
+        <input type="number" id="unitCost" placeholder="Enter cost per unit" />
+
+        <!-- Unit Area with Unit Selection -->
+        <label for="unitArea">Carpet Area:</label>
+        <input type="number" id="unitArea" placeholder="Enter unit area" />
+        <select id="unitAreaUnit">
+            <option value="sqft">sq ft</option>
+            <option value="sqm">sq m</option>
+            <option value="acre">acre</option>
+            <option value="sqkm">sq km</option>
+        </select>
+
+        <!-- Built-up Area with Unit Selection -->
+        <label for="builtUpArea">Built-up Area:</label>
+        <input type="number" id="builtUpArea" placeholder="Enter built-up area" />
+        <select id="builtUpAreaUnit">
+            <option value="sqft">sq ft</option>
+            <option value="sqm">sq m</option>
+            <option value="acre">acre</option>
+            <option value="sqkm">sq km</option>
+        </select>
+
+        <!-- Total Units -->
+        <label for="totalUnits">Total Number of Units:</label>
+        <input type="number" id="totalUnits" placeholder="Enter total units" />
+	<label for="totalBuiltUpArea">Total Built-up Area:</label>
+	<input type="number" id="totalBuiltUpArea" placeholder="Enter total built-up area"><br>
+	<label for="totalBuiltUpAreaUnit">Total Built-up Area Unit:</label>
+	<select id="totalBuiltUpAreaUnit">
+	    <option value="sqft">sq ft</option>
+	    <option value="sqm">sq m</option>
+	    <option value="acre">acre</option>
+	 </select><br>
+
+        <!-- Total Land Area with Unit Selection -->
+        <label for="totalLandArea">Total Land Area:</label>
+        <input type="number" id="totalLandArea" placeholder="Enter total land area" />
+        <select id="totalLandAreaUnit">
+            <option value="sqft">sq ft</option>
+            <option value="sqm">sq m</option>
+            <option value="acre">acre</option>
+            <option value="sqkm">sq km</option>
+        </select>
+
+        <!-- Total Land Cost -->
+        <label for="totalLandCost">Total Land Cost (₹):</label>
+        <input type="number" id="totalLandCost" placeholder="Enter total land cost" />
+
+        <!-- Calculate Button -->
+        <button class="btn" onclick="calculate()">Calculate</button>
+
+        <!-- Output Result -->
+        <div class="output" id="output">
+            <!-- Result will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Conversion function for various units to square feet (sq ft)
+        function convertToSqFt(area, unit) {
+            switch(unit) {
+                case 'sqm': // Square meters to square feet
+                    return area * 10.764;
+                case 'acre': // Acres to square feet
+                    return area * 43560;
+                case 'sqkm': // Square kilometers to square feet
+                    return area * 10763910.41671;
+                case 'sqft': // Already in square feet
+                    return area;
+                default:
+                    return area;
+            }
+        }
+	function formatIndianCurrency(amount) {
+            return new Intl.NumberFormat('en-IN').format(amount);
+        }
+        // Main calculation function
+        function calculate() {
+            // Get input values and units
+            var unitType = document.getElementById('unitType').value;
+            var unitCost = parseFloat(document.getElementById('unitCost').value);
+            var unitArea = parseFloat(document.getElementById('unitArea').value);
+            var unitAreaUnit = document.getElementById('unitAreaUnit').value;
+            var builtUpArea = parseFloat(document.getElementById('builtUpArea').value);
+            var builtUpAreaUnit = document.getElementById('builtUpAreaUnit').value;
+            var totalUnits = parseInt(document.getElementById('totalUnits').value);
+	    var totalBuiltUpArea = parseFloat(document.getElementById('totalBuiltUpArea').value);
+   	    var totalBuiltUpAreaUnit = document.getElementById('totalBuiltUpAreaUnit').value;
+            var totalLandArea = parseFloat(document.getElementById('totalLandArea').value);
+            var totalLandAreaUnit = document.getElementById('totalLandAreaUnit').value;
+            var totalLandCost = parseFloat(document.getElementById('totalLandCost').value);
+
+            // Convert all inputs to square feet
+            unitArea = convertToSqFt(unitArea, unitAreaUnit);
+            builtUpArea = convertToSqFt(builtUpArea, builtUpAreaUnit);
+	    totalBuiltUpArea = convertToSqFt(totalBuiltUpArea, totalBuiltUpAreaUnit); 
+            totalLandArea = convertToSqFt(totalLandArea, totalLandAreaUnit);
+
+            // Check if all required fields are filled
+            if (isNaN(unitCost) || isNaN(unitArea) || isNaN(builtUpArea) || isNaN(totalUnits) || isNaN(totalLandArea) || isNaN(totalLandCost)) {
+                alert("Please fill all fields correctly.");
+                return;
+            }
+
+            // Calculate total built-up area and costs
+            
+            var udsCostPerSqFt = totalLandCost / totalLandArea;
+            var unitCostPerSqFt = unitCost / unitArea;
+	    var builtUpCostPerSqFt = unitCost / builtUpArea;
+	    var uds = (builtUpArea / totalBuiltUpArea) * totalLandArea;
+	    var udsCost = udsCostPerSqFt * uds;
+	    var idealUds = builtUpArea * 0.50
+
+            // Display the results
+            var output = `
+                <h2>Summary</h2>
+                <p><strong>Unit Type:</strong> ${unitType}</p>
+                <p><strong>Total Land Area:</strong> ${totalLandArea.toFixed(2)} sq ft</p>
+                <p><strong>Total Land Cost:</strong> ₹${formatIndianCurrency(totalLandCost.toFixed(2))}</p>
+                <p><strong>Total Built-up Area for ${totalUnits} units:</strong> ${totalBuiltUpArea.toFixed(2)} sq ft</p>
+                <p><strong>Unit Cost per Unit:</strong> ₹${formatIndianCurrency(unitCost.toFixed(2))}</p>
+                <p><strong>Undivided Share of Land (UDS) for this unit:</strong> ${uds.toFixed(2)} sq ft</p>
+		<p><strong>Ideal UDS (50% of Built-up Area):</strong> ${idealUds.toFixed(2)} sq ft</p>
+		<p class="highlight"><strong>Total UDS Cost for this unit:</strong> ₹${formatIndianCurrency(udsCost.toFixed(2))}</p>
+                <p class="highlight"><strong>UDS Cost per sq ft:</strong> ₹${formatIndianCurrency(udsCostPerSqFt.toFixed(2))}</p>
+		<p class="highlight"><strong>Unit Cost per sq ft (Built-up Area):</strong> ₹${formatIndianCurrency(builtUpCostPerSqFt.toFixed(2))}</p>
+                <p class="highlight"><strong>Unit Cost per sq ft (Carpet Area):</strong> ₹${formatIndianCurrency(unitCostPerSqFt.toFixed(2))}</p>
+		
+            `;
+
+            document.getElementById('output').innerHTML = output;
+        }
+    </script>
+
+</body>
+</html>
